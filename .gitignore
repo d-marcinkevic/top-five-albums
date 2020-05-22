@@ -1,0 +1,22 @@
+# compiled output
+dist
+tmp
+build
+out
+lib
+target
+
+# IDEs and editors
+.idea
+.project
+.classpath
+*.launch
+.settings/
+*.iml
+
+# gradle
+.gradle
+.gradletasknamecache
+
+#System Files
+.DS_Store
