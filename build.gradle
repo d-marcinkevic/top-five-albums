@@ -12,8 +12,23 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    ver = [
+            json             : '20200518',
+            mapstruct               : '1.3.1.Final'
+    ]
+}
+
 dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    compile "org.json:json:${ver.json}"
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${ver.mapstruct}"
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.mapstruct:mapstruct:${ver.mapstruct}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
