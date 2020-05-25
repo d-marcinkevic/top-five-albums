@@ -1,9 +1,7 @@
-package com.example.topfivealbums.collection;
+package com.example.topfivealbums.album;
 
-import com.example.topfivealbums.artist.Artist;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Data

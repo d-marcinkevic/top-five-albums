@@ -1,4 +1,4 @@
-package com.example.topfivealbums.collection;
+package com.example.topfivealbums.album;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
