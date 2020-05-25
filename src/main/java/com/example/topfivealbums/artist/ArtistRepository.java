@@ -2,8 +2,9 @@ package com.example.topfivealbums.artist;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -11,5 +12,5 @@ import java.util.Set;
 public class ArtistRepository {
 
     public Set<Artist> foundArtists = new HashSet<>();
-    public Artist savedFavoriteArtist = new Artist();
+    public Map<Long, Artist> savedFavoriteArtist = new HashMap();
 }

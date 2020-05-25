@@ -24,7 +24,6 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Set<Artist> getArtistsByName(String artistName) throws IOException, InterruptedException {
-
         ObjectMapper objectMapper = new ObjectMapper();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://itunes.apple.com/search?entity=allArtist&term=" + artistName))
@@ -34,6 +33,9 @@ public class ArtistServiceImpl implements ArtistService {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject object = new JSONObject(response.body());
         JSONArray artistJsonArray = (JSONArray) object.get("results");
+        if(!artistRepository.getFoundArtists().isEmpty()){
+            artistRepository.getFoundArtists().clear();
+        }
         artistJsonArray.forEach(obj -> {
             ArtistDto artistDto = objectMapper.convertValue(((JSONObject) obj).toMap(), ArtistDto.class);
             Artist artist = artistMapper.map(artistDto);
@@ -43,18 +45,19 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist saveFavoriteArtist(Long artistId) {
+    public Artist saveFavoriteArtist(Long artistId, Long userId) {
         Artist artist = artistRepository.getFoundArtists().stream()
                 .filter(e -> artistId.equals(e.getArtistId()))
                 .findAny()
                 .orElse(null);
-        artistRepository.setSavedFavoriteArtist(artist);
-        return artistRepository.getSavedFavoriteArtist();
+        artistRepository.getSavedFavoriteArtist().put(userId, artist);
+        return artist;
     }
 
     @Override
-    public Artist getFavoriteArtist() {
-        return artistRepository.getSavedFavoriteArtist();
+    public Artist getFavoriteArtist(Long userId) {
+        Artist artist = artistRepository.getSavedFavoriteArtist().get(userId);
+        return artist;
     }
 
     private static final HttpClient httpClient = HttpClient.newBuilder()
