@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
@@ -26,7 +27,7 @@ public class ArtistServiceImpl implements ArtistService {
     public Set<Artist> getArtistsByName(String artistName) throws IOException, InterruptedException {
         ObjectMapper objectMapper = new ObjectMapper();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://itunes.apple.com/search?entity=allArtist&term=" + artistName))
+                .uri(URI.create("https://itunes.apple.com/search?entity=allArtist&term=" + artistName.trim().replace(" ", "+")))
                 .header("Content-Type", "application/json")
                 .GET()
                 .build();
@@ -45,6 +46,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @CacheEvict(value = "albums", key = "#userId")
     public Artist saveFavoriteArtist(Long artistId, Long userId) {
         Artist artist = artistRepository.getFoundArtists().stream()
                 .filter(e -> artistId.equals(e.getArtistId()))
