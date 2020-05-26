@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
@@ -25,6 +26,7 @@ public class AlbumServiceImpl implements AlbumService {
     ArtistRepository artistRepository;
 
     @Override
+    @Cacheable("albums")
     public List<Album> getTopFiveAlbums(Long userId) throws IOException, InterruptedException {
         Artist artist = artistRepository.getSavedFavoriteArtist().get(userId);
         if(artist == null){
